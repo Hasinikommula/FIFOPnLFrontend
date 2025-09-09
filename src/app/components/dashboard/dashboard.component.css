@@ -1,0 +1,322 @@
+.dashboard-container {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1e40af;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin-left: 2rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.nav-links li.active {
+  color: #1e40af;
+  font-weight: 500;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+}
+
+.notification {
+  width: 10px;
+  height: 10px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.user-name {
+  color: #1e40af;
+  font-weight: 500;
+}
+
+.trader {
+  color: #6b7280;
+  font-weight: normal;
+}
+
+.content {
+  margin-top: 80px;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.add-transaction-btn,
+.pnl-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  background: #1976d2;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.add-transaction-btn:hover,
+.pnl-btn:hover {
+  background: #145ca1;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card .icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 1rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.card-content p {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-content h2 {
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.card-content span {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.profit {
+  color: #10b981;
+}
+
+.loss {
+  color: #ef4444;
+}
+
+/* Transaction Form */
+.transaction-form.card-box {
+  max-width: 600px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.transaction-form h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.form-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.form-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+}
+
+.form-actions button:first-child {
+  background-color: #fff;
+  color: #1e40af;
+  border: 1px solid #1e40af;
+}
+
+.form-actions button:last-child {
+  background-color: #1e40af;
+  color: #fff;
+}
+
+/* Product-wise P&L Inline Card */
+.product-pnl.card-box {
+  max-width: 600px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.product-pnl .pnl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.product-pnl .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.product-pnl .close-btn:hover {
+  color: #333;
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.pnl-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pnl-table thead {
+  background: #f7f8fa;
+}
+
+.pnl-table th {
+  text-align: center;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+  border-bottom: 2px solid #eaeaea;
+}
+
+.pnl-table td {
+  text-align: center;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.pnl-value.profit {
+  color: #2e7d32;
+}
+
+.pnl-value.loss {
+  color: #c62828;
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+  .product-pnl.card-box,
+  .transaction-form.card-box {
+    width: 95%;
+    margin: 15px auto;
+  }
+}
+
+.chart-section {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.chart-container {
+  position: relative;
+  height: 400px;
+  width: 100%;
+}
+.error small {
+  color: red;
+}

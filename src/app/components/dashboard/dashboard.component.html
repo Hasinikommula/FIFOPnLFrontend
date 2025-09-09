@@ -1,0 +1,196 @@
+<div class="dashboard-container">
+  <nav class="navbar">
+    <div class="logo">FIFO Trader</div>
+  </nav>
+
+  <div class="content">
+    <div class="header">
+      <h1>P&L Dashboard</h1>
+      <p class="subtitle">
+        FIFO-based profit and loss analysis
+      </p>
+      <div class="header-actions">
+  <button (click)="toggleTransactionForm()" class="add-transaction-btn">
+    + Add Transaction
+  </button>
+  <button (click)="toggleProductPnl()" class="pnl-btn">
+    {{ showProductPnl ? 'Hide Product-wise P&L' : 'View Product-wise P&L' }}
+  </button>
+</div>
+
+      <!-- ✅ Inline Product-wise P&L (like transaction form) -->
+      <div class="product-pnl card-box" *ngIf="showProductPnl && hasProductData()">
+        <div class="pnl-header">
+          <h2>📊 Product-wise Profit & Loss</h2>
+          <button class="close-btn" (click)="toggleProductPnl()">✖</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="pnl-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Gain/Loss</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of getObjectKeys(dashboardSummary.pnlByProduct)">
+                <td class="product-name">{{ product }}</td>
+                <td
+                  class="pnl-value"
+                  [ngClass]="getProductPnlClass(dashboardSummary.pnlByProduct[product])"
+                >
+                  {{ dashboardSummary.pnlByProduct[product] }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!--transaction form -->
+  <div class="transaction-form card-box" *ngIf="showForm">
+  <h2>+ Add New Transaction</h2>
+  <form (ngSubmit)="onSubmit(transactionForm)" #transactionForm="ngForm">
+    <div class="form-group">
+      <label>Date</label>
+      <input
+        type="datetime-local"
+        [(ngModel)]="newTransaction.date"
+        name="date"
+        required
+        #dateCtrl="ngModel"
+        [max]="today"
+      />
+      <div *ngIf="(dateCtrl.invalid && (dateCtrl.touched || submitted))" class="error">
+        <small *ngIf="dateCtrl.errors?.['required']">Date is required.</small>
+        <small *ngIf="dateCtrl.errors?.['max']">Future dates are not allowed.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Product</label>
+      <input
+        type="text"
+        [(ngModel)]="newTransaction.product"
+        name="product"
+        placeholder="e.g., Apple, Orange, Mango"
+        required
+        minlength="2"
+        maxlength="30"
+        #productCtrl="ngModel"
+      />
+      <div *ngIf="(productCtrl.invalid && (productCtrl.touched || submitted))" class="error">
+        <small *ngIf="productCtrl.errors?.['required']">Product name is required.</small>
+        <small *ngIf="productCtrl.errors?.['minlength']">At least 2 characters required.</small>
+        <small *ngIf="productCtrl.errors?.['maxlength']">Maximum 30 characters allowed.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Transaction Type</label>
+      <select
+        [(ngModel)]="newTransaction.txnType"
+        name="txnType"
+        required
+        #txnTypeCtrl="ngModel"
+      >
+        <option *ngFor="let type of ['Buy', 'Sell']" [value]="type">{{ type }}</option>
+      </select>
+      <div *ngIf="(txnTypeCtrl.invalid && (txnTypeCtrl.touched || submitted))" class="error">
+        <small>Transaction type is required.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Quantity</label>
+      <input
+        type="number"
+        [(ngModel)]="newTransaction.quantity"
+        name="quantity"
+        required
+        min="1"
+        #quantityCtrl="ngModel"
+      />
+      <div *ngIf="(quantityCtrl.invalid && (quantityCtrl.touched || submitted))" class="error">
+        <small *ngIf="quantityCtrl.errors?.['required']">Quantity is required.</small>
+        <small *ngIf="quantityCtrl.errors?.['min']">Quantity must be at least 1.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Price per Unit</label>
+      <input
+        type="number"
+        [(ngModel)]="newTransaction.pricePerUnit"
+        name="pricePerUnit"
+        step="0.01"
+        required
+        min="0.01"
+        #priceCtrl="ngModel"
+      />
+      <div *ngIf="(priceCtrl.invalid && (priceCtrl.touched || submitted))" class="error">
+        <small *ngIf="priceCtrl.errors?.['required']">Price per unit is required.</small>
+        <small *ngIf="priceCtrl.errors?.['min']">Price must be greater than 0.</small>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="resetForm()">Cancel</button>
+      <button type="submit">Add Transaction</button>
+    </div>
+  </form>
+</div>
+
+
+    <!-- Summary cards about product's Profit and Loss -->
+    <div class="summary-cards" *ngIf="dashboardSummary">
+      <div class="card">
+        <div class="icon loss-icon"></div>
+        <div class="card-content">
+          <p>Total P&L</p>
+          <h2 [ngClass]="getTotalPnlClass()">
+            ${{ dashboardSummary.totalPnl || 'NaN' }}
+          </h2>
+          <span [ngClass]="getTotalPnlClass()">
+            {{ dashboardSummary.totalPnl >= 0 ? 'Profit' : 'Loss' }}
+          </span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="icon products-icon"></div>
+        <div class="card-content">
+          <p>Products Traded</p>
+          <h2>{{ dashboardSummary.totalProducts }}</h2>
+          <span>Total products</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="icon profitable-icon"></div>
+        <div class="card-content">
+          <p>Profitable Products</p>
+          <h2>{{ dashboardSummary.profitableProducts }}</h2>
+          <span>Out of {{ dashboardSummary.totalProducts }}</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="icon transactions-icon"></div>
+        <div class="card-content">
+          <p>Total Transactions</p>
+          <h2>{{ dashboardSummary.totalTransactions }}</h2>
+          <span>Transactions</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graph Analysis about Profit and Loss of the products -->
+    <div class="chart-section" *ngIf="hasProductData()">
+      <h3>Profit & Loss Chart</h3>
+      <div class="chart-container">
+        <canvas #pnlChart></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
