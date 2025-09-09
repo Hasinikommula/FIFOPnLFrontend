@@ -34,7 +34,7 @@ export class DashboardComponent {
   };
 
   showForm: boolean = false;
-  showProductPnl: boolean = false; // ✅ toggle state
+  showProductPnl: boolean = false; // toggle state
 @ViewChild('pnlChart') private chartCanvas!: ElementRef<HTMLCanvasElement>;
   private chartInstance: Chart | undefined;
 
